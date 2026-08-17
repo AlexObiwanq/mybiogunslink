@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ecstasy wrld</title>
+  <link rel="stylesheet" href="https://unpkg.com/98.css">
+  <!-- Import Font Montserrat de pe Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Aplică Montserrat peste absolut toate elementele din pagină */
+    * { 
+      box-sizing: border-box; 
+      font-family: 'Montserrat', sans-serif !important;
+    }
+    
+    body {
+      background-color: #1a002c;
+      background-image: radial-gradient(#4a0072 1px, transparent 1px);
+      background-size: 20px 20px;
+      margin: 0;
+      padding: 0;
+      font-size: 13px;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #000;
+    }
+
+    .title-bar {
+      background: linear-gradient(90deg, #d800a6, #6a008a) !important;
+      padding: 3px 8px !important;
+    }
+    .title-bar-text {
+      font-size: 12px !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.5px;
+    }
+
+    #welcome-modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(20, 0, 35, 0.85);
+      display: flex; justify-content: center; align-items: center;
+      z-index: 9999;
+    }
+    .welcome-box { width: 340px; }
+
+    #app-container {
+      display: none;
+      width: 100vw; height: 100vh;
+      background-color: transparent;
+    }
+    .layout { display: flex; width: 100%; height: 100%; }
+
+    .sidebar {
+      width: 240px;
+      min-width: 220px;
+      background: #e6c2ec;
+      border-right: 3px solid #ff77e9;
+      padding: 12px;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 10px 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .site-header {
+      width: 100%;
+      max-width: 1080px;
+      margin-top: 5px;
+      margin-bottom: 12px;
+      text-align: center;
+      background: #e6c2ec !important;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 15px 25px;
+      width: 100%;
+      max-width: 1080px;
+    }
+    .grid-card { 
+      width: 100%; 
+      background: #f3d5f7 !important;
+    }
+
+    .album-img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border: 2px inset #ffb3f3;
+      margin-bottom: 5px;
+    }
+
+    .controls {
+      display: flex; gap: 6px; justify-content: center; margin: 3px 0;
+    }
+    .controls button {
+      font-size: 11px !important;
+      padding: 3px 10px !important;
+      font-weight: 700 !important;
+    }
+
+    ul.tree-view li {
+      font-size: 12px !important;
+      line-height: 1.6;
+    }
+    a {
+      color: #70005d;
+      font-weight: 700 !important;
+      font-size: 12px !important;
+      text-decoration: underline;
+    }
+    a:hover {
+      color: #d800a6;
+    }
+
+    label {
+      font-size: 11px !important;
+      font-weight: 700 !important;
+    }
+
+    /* Secțiunea About Me cu Montserrat */
+    #about-section {
+      display: none;
+      width: 100%;
+      max-width: 750px;
+      background: #f3d5f7 !important;
+      font-size: 14px !important;
+      line-height: 1.7;
+      margin-top: 5px;
+    }
+
+    #about-section p {
+      font-size: 13px !important;
+      color: #1a002c;
+      margin-bottom: 12px;
+    }
+
+    #about-section h2 {
+      font-size: 18px !important;
+      font-weight: 800 !important;
+      color: #4a005c;
+      margin-top: 0;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. POPUP WELCOME -->
+  <div id="welcome-modal">
+    <div class="window welcome-box" style="background: #e6c2ec;">
+      <div class="title-bar">
+        <div class="title-bar-text">welcome.exe</div>
+        <div class="title-bar-controls">
+          <button aria-label="Close" onclick="closeWelcome()"></button>
+        </div>
+      </div>
+      <div class="window-body" style="text-align: center; padding: 15px;">
+        <p style="margin-bottom: 15px; color: #2a003f; font-weight: 700; font-size: 13px;">heyyy welcome pe ecstasy wrld!</p>
+        <div class="field-row" style="justify-content: center; gap: 10px;">
+          <button onclick="closeWelcome()" style="padding: 4px 18px; font-size: 12px; font-weight: 700;">Ok</button>
+          <button onclick="window.open('https://google.com', '_blank')" style="padding: 4px 18px; font-size: 12px; font-weight: 700;">Help</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. SITE PRINCIPAL -->
+  <div id="app-container">
+    <div class="layout">
+      
+      <!-- Sidebar Navigation -->
+      <div class="sidebar">
+        <div class="title-bar">
+          <div class="title-bar-text">Navigation</div>
+        </div>
+        <p style="margin: 2px 0 6px 0; font-weight: 800; color: #4a005c; font-size: 13px; letter-spacing: 1px;">ECSTASY WRLD</p>
+        
+        <ul class="tree-view" style="background: #fff0f9; padding: 8px;">
+          <li>
+            <strong style="font-size: 12px; font-weight: 700;">Pages</strong>
+            <ul style="margin-top: 3px;">
+              <li><a href="#" onclick="showSection('home')">Home / Tracks</a></li>
+              <li><a href="#" onclick="showSection('about')">About Me</a></li>
+            </ul>
+          </li>
+          <li style="margin-top: 8px;">
+            <strong style="font-size: 12px; font-weight: 700;">Socials</strong>
+            <ul style="margin-top: 3px;">
+              <li><a href="https://spotify.com" target="_blank">Spotify Profile</a></li>
+              <li><a href="https://stats.fm" target="_blank">Stats.fm Analytics</a></li>
+              <li><a href="https://discord.com" target="_blank">Discord Server</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        
+        <!-- Header Titlu sus -->
+        <div class="window site-header">
+          <div class="title-bar">
+            <div class="title-bar-text">system_banner.exe</div>
+          </div>
+          <div class="window-body" style="padding: 6px;">
+            <h1 style="margin: 0; font-size: 20px; letter-spacing: 3px; color: #3d004d; font-weight: 800;">ecstasy wrld</h1>
+          </div>
+        </div>
+
+        <!-- SECTIUNEA 1: 6 PIESE -->
+        <div class="grid-container" id="home-section">
+          
+          <!-- Track 1: Love Me -->
+          <div class="window grid-card">
+            <div class="title-bar"><div class="title-bar-text">love_me.exe</div></div>
+            <div class="window-body" style="padding: 6px;">
+              <img src="loveme.jpg" class="album-img">
+              <audio id="audio1" src="loveme.mp3"></audio>
+              <div class="controls">
+                <button onclick="playTrack('audio1')">► Play</button>
+                <button onclick="pauseTrack('audio1')">❚❚ Pause</button>
+                <button onclick="stopTrack('audio1')">◼ Stop</button>
+              </div>
+              <div class="field-row" style="justify-content: center; margin-top: 4px;">
+                <label>Vol:</label>
+                <input type="range" min="0" max="1" step="0.05" value="0.5" oninput="setVol('audio1', this.value)" style="width: 110px;">
+              </div>
+            </div>
+          </div>
+
+          <!-- Track 2: Drink N Dance -->
+          <div class="window grid-card">
+            <div class="title-bar"><div class="title-bar-text">drink_n_dance.exe</div></div>
+            <div class="window-body" style="padding: 6px;">
+              <img src="drink.jpg" class="album-img">
+              <audio id="audio2" src="drink.mp3"></audio>
+              <div class="controls">
+                <button onclick="playTrack('audio2')">► Play</button>
+                <button onclick="pauseTrack('audio2')">❚❚ Pause</button>
+                <button onclick="stopTrack('audio2')">◼ Stop</button>
+              </div>
+              <div class="field-row" style="justify-content: center; margin-top: 4px;">
+                <label>Vol:</label>
+                <input type="range" min="0" max="1" step="0.05" value="0.5" oninput="setVol('audio2', this.value)" style="width: 110px;">
+              </div>
+            </div>
+          </div>
+
+          <!-- Track 3: Monster -->
+          <div class="window grid-card">
+            <div class="title-bar"><div class="title-bar-text">monster.exe</div></div>
+            <div class="window-body" style="padding: 6px;">
+              <img src="away.jpg" class="album-img">
+              <audio id="audio3" src="away.mp3"></audio>
+              <div class="controls">
+                <button onclick="playTrack('audio3')">► Play</button>
+                <button onclick="pauseTrack('audio3')">❚❚ Pause</button>
+                <button onclick="stopTrack('audio3')">◼ Stop</button>
+              </div>
+              <div class="field-row" style="justify-content: center; margin-top: 4px;">
+                <label>Vol:</label>
+                <input type="range" min="0" max="1" step="0.05" value="0.5" oninput="setVol('audio3', this.value)" style="width: 110px;">
+              </div>
+            </div>
+          </div>
+
+          <!-- Track 4: Comin Out Strong -->
+          <div class="window grid-card">
+            <div class="title-bar"><div class="title-bar-text">comin_out_strong.exe</div></div>
+            <div class="window-body" style="padding: 6px;">
+              <img src="comin.jpg" class="album-img">
+              <audio id="audio4" src="comin.mp3"></audio>
+              <div class="controls">
+                <button onclick="playTrack('audio4')">► Play</button>
+                <button onclick="pauseTrack('audio4')">❚❚ Pause</button>
+                <button onclick="stopTrack('audio4')">◼ Stop</button>
+              </div>
+              <div class="field-row" style="justify-content: center; margin-top: 4px;">
+                <label>Vol:</label>
+                <input type="range" min="0" max="1" step="0.05" value="0.5" oninput="setVol('audio4', this.value)" style="width: 110px;">
+              </div>
+            </div>
+          </div>
+
+          <!-- Track 5: Double Fantasy -->
+          <div class="window grid-card">
+            <div class="title-bar"><div class="title-bar-text">double_fantasy.exe</div></div>
+            <div class="window-body" style="padding: 6px;">
+              <img src="double.jpg" class="album-img">
+              <audio id="audio5" src="double.mp3"></audio>
+              <div class="controls">
+                <button onclick="playTrack('audio5')">► Play</button>
+                <button onclick="pauseTrack('audio5')">❚❚ Pause</button>
+                <button onclick="stopTrack('audio5')">◼ Stop</button>
+              </div>
+              <div class="field-row" style="justify-content: center; margin-top: 4px;">
+                <label>Vol:</label>
+                <input type="range" min="0" max="1" step="0.05" value="0.5" oninput="setVol('audio5', this.value)" style="width: 110px;">
+              </div>
+            </div>
+          </div>
+
+          <!-- Track 6: Rodeo -->
+          <div class="window grid-card">
+            <div class="title-bar"><div class="title-bar-text">rodeo.exe</div></div>
+            <div class="window-body" style="padding: 6px;">
+              <img src="pray.jpg" class="album-img">
+              <audio id="audio6" src="pray.mp3"></audio>
+              <div class="controls">
+                <button onclick="playTrack('audio6')">► Play</button>
+                <button onclick="pauseTrack('audio6')">❚❚ Pause</button>
+                <button onclick="stopTrack('audio6')">◼ Stop</button>
+              </div>
+              <div class="field-row" style="justify-content: center; margin-top: 4px;">
+                <label>Vol:</label>
+                <input type="range" min="0" max="1" step="0.05" value="0.5" oninput="setVol('audio6', this.value)" style="width: 110px;">
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- SECTIUNEA 2: ABOUT ME (MONTSERRAT PESTE TOT) -->
+        <div class="window" id="about-section">
+          <div class="title-bar">
+            <div class="title-bar-text">about_me.txt</div>
+          </div>
+          <div class="window-body" style="padding: 20px;">
+            <h2>welcome to ecstasy wrld.</h2>
+
+            <p>I’m just someone navigating through soundscapes, heavily inspired by dark R&B, atmospheric beats, and late-night vibes. My music taste revolves around the cinematic eras of <strong>The Weeknd</strong> (from Trilogy and Kiss Land to After Hours) and the chaotic, raw energy of <strong>Future</strong> (DS2, Monster).</p>
+
+            <p>When I’m not curating playlists or tweaking my setups, I’m usually diving deep into music lore, gaming, and building digital spaces like this one. I value aesthetics, good production, and creative freedom.</p>
+
+            <p>Explore the tracks, check out the links, and enjoy the stay.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function closeWelcome() {
+      document.getElementById('welcome-modal').style.display = 'none';
+      document.getElementById('app-container').style.display = 'block';
+    }
+
+    function showSection(section) {
+      if (section === 'home') {
+        document.getElementById('home-section').style.display = 'grid';
+        document.getElementById('about-section').style.display = 'none';
+      } else if (section === 'about') {
+        document.getElementById('home-section').style.display = 'none';
+        document.getElementById('about-section').style.display = 'block';
+        stopAllTracks();
+      }
+    }
+
+    function playTrack(id) {
+      stopAllTracks();
+      document.getElementById(id).play();
+    }
+    function pauseTrack(id) {
+      document.getElementById(id).pause();
+    }
+    function stopTrack(id) {
+      const a = document.getElementById(id);
+      a.pause();
+      a.currentTime = 0;
+    }
+    function setVol(id, val) {
+      document.getElementById(id).volume = val;
+    }
+    function stopAllTracks() {
+      for (let i = 1; i <= 6; i++) {
+        stopTrack('audio' + i);
+      }
+    }
+  </script>
+
+</body>
+</html>
