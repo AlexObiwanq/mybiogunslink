@@ -58,6 +58,8 @@
       color: #ffffff;
       letter-spacing: 2px;
       animation: pulse 1.5s infinite;
+      text-align: center;
+      padding: 0 15px;
     }
 
     @keyframes pulse {
@@ -84,22 +86,49 @@
       pointer-events: none;
     }
 
-    /* 4. CARDUL PRINCIPAL GUNS.LOL (POZA ÎN STÂNGA) */
+    /* 4. CARDUL PRINCIPAL GUNS.LOL */
     .profile-card {
       position: relative;
       z-index: 10;
-      width: 38rem;
+      width: 40rem;
       max-width: 90vw;
-      padding: 24px 30px;
+      padding: 32px 30px 28px 30px;
       background: rgba(255, 255, 255, 0);
-      border: 2px solid rgba(246, 0, 0, 0.3); /* Marginea roșie */
+      border: 2px solid rgba(246, 0, 0, 0.3);
       border-radius: 40px;
       display: flex;
-      flex-direction: row; /* Layout orizontal: poza stânga, text dreapta */
+      flex-direction: row;
       align-items: center;
       gap: 24px;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
       backdrop-filter: blur(0px);
+    }
+
+    /* BUTON MAIN SITE PE CARD */
+    .main-site-btn {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      background: rgba(216, 0, 166, 0.25);
+      border: 1px solid rgba(255, 119, 233, 0.4);
+      color: #ffffff;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 0 10px rgba(216, 0, 166, 0.3);
+      transition: all 0.25s ease;
+    }
+
+    .main-site-btn:hover {
+      background: rgba(216, 0, 166, 0.6);
+      border-color: #ff77e9;
+      transform: translateY(-2px);
+      box-shadow: 0 0 15px rgba(255, 119, 233, 0.6);
     }
 
     .avatar-img {
@@ -117,6 +146,7 @@
       align-items: flex-start;
       gap: 6px;
       width: 100%;
+      margin-top: 10px;
     }
 
     .username-row {
@@ -155,20 +185,15 @@
       animation: blink 0.8s infinite;
     }
 
-    .username .cursor-blink {
-      height: 26px;
-    }
-
-    .bio-text .cursor-blink {
-      height: 16px;
-    }
+    .username .cursor-blink { height: 26px; }
+    .bio-text .cursor-blink { height: 16px; }
 
     @keyframes blink {
       0%, 100% { opacity: 1; }
       50% { opacity: 0; }
     }
 
-    /* SOCIAL LINKS (MARI, ALB CU GLOW) */
+    /* SOCIAL LINKS */
     .socials-row {
       display: flex;
       gap: 18px;
@@ -177,7 +202,7 @@
 
     .social-link {
       color: #ffffff;
-      font-size: 28px; /* Iconițe mărite */
+      font-size: 28px;
       text-decoration: none;
       filter: drop-shadow(#ffffff 1px 0 7px);
       transition: transform 0.2s ease;
@@ -187,7 +212,7 @@
       transform: scale(1.2);
     }
 
-    /* CONTROL VOLUM STÂNGA SUS */
+    /* CONTROL VOLUM */
     .volume-btn {
       position: fixed;
       top: 20px; left: 20px;
@@ -200,11 +225,69 @@
       cursor: pointer;
       backdrop-filter: blur(5px);
     }
+
+    /* MEDIA QUERIES PENTRU TELEFON (RESPONSIVE) */
+    @media (max-width: 600px) {
+      .profile-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 50px 20px 25px 20px;
+        border-radius: 30px;
+        gap: 16px;
+        max-width: 92vw;
+      }
+
+      .main-site-btn {
+        top: 14px;
+        right: 50%;
+        transform: translateX(50%);
+        font-size: 11px;
+        padding: 4px 12px;
+      }
+      .main-site-btn:hover {
+        transform: translateX(50%) translateY(-2px);
+      }
+
+      .avatar-img {
+        width: 85px;
+        height: 85px;
+        border-radius: 22px;
+      }
+
+      .card-info {
+        align-items: center;
+        margin-top: 0;
+      }
+
+      .username {
+        font-size: 26px;
+      }
+
+      .badge-icon {
+        font-size: 18px;
+      }
+
+      .bio-text {
+        font-size: 15px;
+      }
+
+      .social-link {
+        font-size: 24px;
+      }
+
+      .volume-btn {
+        top: 15px;
+        left: 15px;
+        padding: 6px 10px;
+        font-size: 13px;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <!-- Overlay-ul inițial Guns.lol -->
+  <!-- Overlay-ul inițial -->
   <div id="enter-overlay" onclick="enterSite()">
     <span>click to enter...</span>
   </div>
@@ -214,26 +297,31 @@
     <i class="fa-solid fa-volume-high" id="vol-icon"></i>
   </button>
 
-  <!-- Videoclipul original de fundal de pe Guns.lol -->
+  <!-- Videoclip de fundal -->
   <video class="bg-video" autoplay loop muted playsinline id="bg-video">
     <source src="https://r2.guns.lol/aeab115e-8ce1-4666-946b-b93488768c19.mp4" type="video/mp4">
   </video>
 
-  <!-- Canvas pentru Ninsori -->
+  <!-- Canvas Ninsori -->
   <canvas id="snow-canvas"></canvas>
 
-  <!-- Cardul de profil Guns.lol -->
+  <!-- Card Profil -->
   <div class="profile-card">
-    <!-- Avatarul în stânga -->
+    
+    <!-- BUTON CĂTRE ECSTASY WRLD -->
+    <a href="https://ecstasywrld.com" target="_blank" class="main-site-btn">
+      Main Site <i class="fa-solid fa-arrow-right"></i>
+    </a>
+
+    <!-- Avatar -->
     <img src="https://r2.guns.lol/64fc1163-2128-424a-94d6-18e432e41f6f.webp" class="avatar-img" alt="Avatar">
 
-    <!-- Informațiile în dreapta -->
+    <!-- Informații Card -->
     <div class="card-info">
       <div class="username-row">
         <span class="username">
           <span id="typed-username"></span><span class="cursor-blink" id="cursor-name"></span>
         </span>
-        <!-- Diamond Badge-ul alb -->
         <svg xmlns="http://www.w3.org/2000/svg" class="badge-icon" width="1em" height="1em" viewBox="23 32 465 448">
           <path fill="currentColor" d="M396.31 32H264l84.19 112.26L396.31 32zm-280.62 0l48.12 112.26L248 32H115.69zM256 74.67L192 160h128l-64-85.33zm166.95-23.61L376.26 160H488L422.95 51.06zm-333.9 0L23 160h112.74L89.05 51.06zM146.68 192H24l222.8 288h.53L146.68 192zm218.64 0L264.67 480h.53L488 192H365.32zm-35.93 0H182.61L256 400l73.39-208z"></path>
         </svg>
@@ -253,7 +341,7 @@
     </div>
   </div>
 
-  <!-- Piesa audio originala de pe Guns.lol -->
+  <!-- Audio de fundal -->
   <audio id="bg-audio" src="https://r2.guns.lol/35948b79-0a1a-4640-bb6f-e2a35442da00.mp3" loop></audio>
 
   <script>
@@ -279,7 +367,7 @@
       }
     }
 
-    /* EFECTE TYPEWRITER INFINIT PENTRU NUME SI BIO */
+    /* TYPEWRITER LOOP */
     const nameText = "alexandru";
     const bioText = "heyyy";
 
@@ -340,7 +428,7 @@
       });
     }
 
-    /* ANIMAȚIE SNOWFLAKES */
+    /* SNOWFLAKES ANIMATION */
     const canvas = document.getElementById('snow-canvas');
     const ctx = canvas.getContext('2d');
 
