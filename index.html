@@ -84,46 +84,50 @@
       pointer-events: none;
     }
 
-    /* 4. CARDUL PRINCIPAL GUNS.LOL */
+    /* 4. CARDUL PRINCIPAL GUNS.LOL (POZA ÎN STÂNGA) */
     .profile-card {
       position: relative;
       z-index: 10;
-      width: 44rem;
+      width: 38rem;
       max-width: 90vw;
-      padding: 26px;
+      padding: 24px 30px;
       background: rgba(255, 255, 255, 0);
       border: 2px solid rgba(246, 0, 0, 0.3); /* Marginea roșie */
-      border-radius: 100px;
+      border-radius: 40px;
       display: flex;
-      flex-direction: column;
+      flex-direction: row; /* Layout orizontal: poza stânga, text dreapta */
       align-items: center;
+      gap: 24px;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
       backdrop-filter: blur(0px);
     }
 
-    .card-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
+    .avatar-img {
+      width: 100px;
+      height: 100px;
+      border-radius: 28px;
+      object-fit: cover;
+      border: 2px solid rgba(246, 0, 0, 0.4);
+      flex-shrink: 0;
     }
 
-    .avatar-img {
-      width: 90px;
-      height: 90px;
-      border-radius: 35px;
-      object-fit: cover;
-      border: 2px solid rgba(246, 0, 0, 0.3);
+    .card-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      width: 100%;
     }
 
     .username-row {
       display: flex;
       align-items: center;
       gap: 8px;
+      min-height: 40px;
     }
 
     .username {
-      font-size: 36px;
+      font-size: 32px;
       font-weight: 600;
       color: #ffffff;
       text-shadow: 0px 0px 16.5px #ffffff;
@@ -139,18 +143,41 @@
       font-size: 17px;
       font-weight: 500;
       color: rgba(255, 255, 255, 0.8);
+      min-height: 26px;
     }
 
-    /* SOCIAL LINKS (ALB CU GLOW) */
+    /* CURSORUL CLIPITOR PENTRU TYPEWRITER */
+    .cursor-blink {
+      display: inline-block;
+      width: 2px;
+      background-color: #ffffff;
+      margin-left: 2px;
+      animation: blink 0.8s infinite;
+    }
+
+    .username .cursor-blink {
+      height: 26px;
+    }
+
+    .bio-text .cursor-blink {
+      height: 16px;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* SOCIAL LINKS (MARI, ALB CU GLOW) */
     .socials-row {
       display: flex;
-      gap: 16px;
-      margin-top: 10px;
+      gap: 18px;
+      margin-top: 8px;
     }
 
     .social-link {
       color: #ffffff;
-      font-size: 22px;
+      font-size: 28px; /* Iconițe mărite */
       text-decoration: none;
       filter: drop-shadow(#ffffff 1px 0 7px);
       transition: transform 0.2s ease;
@@ -197,19 +224,24 @@
 
   <!-- Cardul de profil Guns.lol -->
   <div class="profile-card">
-    <div class="card-content">
-      <!-- Avatarul original -->
-      <img src="https://r2.guns.lol/64fc1163-2128-424a-94d6-18e432e41f6f.webp" class="avatar-img" alt="Avatar">
+    <!-- Avatarul în stânga -->
+    <img src="https://r2.guns.lol/64fc1163-2128-424a-94d6-18e432e41f6f.webp" class="avatar-img" alt="Avatar">
 
+    <!-- Informațiile în dreapta -->
+    <div class="card-info">
       <div class="username-row">
-        <span class="username" id="typed-username"></span>
+        <span class="username">
+          <span id="typed-username"></span><span class="cursor-blink" id="cursor-name"></span>
+        </span>
         <!-- Diamond Badge-ul alb -->
         <svg xmlns="http://www.w3.org/2000/svg" class="badge-icon" width="1em" height="1em" viewBox="23 32 465 448">
           <path fill="currentColor" d="M396.31 32H264l84.19 112.26L396.31 32zm-280.62 0l48.12 112.26L248 32H115.69zM256 74.67L192 160h128l-64-85.33zm166.95-23.61L376.26 160H488L422.95 51.06zm-333.9 0L23 160h112.74L89.05 51.06zM146.68 192H24l222.8 288h.53L146.68 192zm218.64 0L264.67 480h.53L488 192H365.32zm-35.93 0H182.61L256 400l73.39-208z"></path>
         </svg>
       </div>
 
-      <div class="bio-text" id="typed-bio"></div>
+      <div class="bio-text">
+        <span id="typed-bio"></span><span class="cursor-blink" id="cursor-bio" style="display: none;"></span>
+      </div>
 
       <!-- Iconițe Social Media -->
       <div class="socials-row">
@@ -234,7 +266,7 @@
       setTimeout(() => overlay.style.display = 'none', 800);
 
       audio.play();
-      startTypewriterName();
+      startLoop();
     }
 
     function toggleAudio() {
@@ -247,27 +279,65 @@
       }
     }
 
-    /* EFECTE TYPEWRITER PENTRU NUME SI BIO */
+    /* EFECTE TYPEWRITER INFINIT PENTRU NUME SI BIO */
     const nameText = "alexandru";
     const bioText = "heyyy";
-    let n = 0, b = 0;
 
-    function startTypewriterName() {
-      if (n < nameText.length) {
-        document.getElementById("typed-username").innerHTML += nameText.charAt(n);
-        n++;
-        setTimeout(startTypewriterName, 150);
-      } else {
-        setTimeout(startTypewriterBio, 300);
+    const typedNameEl = document.getElementById("typed-username");
+    const typedBioEl = document.getElementById("typed-bio");
+    const cursorNameEl = document.getElementById("cursor-name");
+    const cursorBioEl = document.getElementById("cursor-bio");
+
+    const writeSpeed = 70;
+    const deleteSpeed = 35;
+    const pauseTime = 1200;
+
+    function typeText(element, text, callback) {
+      let i = 0;
+      function step() {
+        if (i < text.length) {
+          element.textContent += text.charAt(i);
+          i++;
+          setTimeout(step, writeSpeed);
+        } else if (callback) {
+          setTimeout(callback, pauseTime);
+        }
       }
+      step();
     }
 
-    function startTypewriterBio() {
-      if (b < bioText.length) {
-        document.getElementById("typed-bio").innerHTML += bioText.charAt(b);
-        b++;
-        setTimeout(startTypewriterBio, 100);
+    function deleteText(element, callback) {
+      function step() {
+        let current = element.textContent;
+        if (current.length > 0) {
+          element.textContent = current.substring(0, current.length - 1);
+          setTimeout(step, deleteSpeed);
+        } else if (callback) {
+          setTimeout(callback, 200);
+        }
       }
+      step();
+    }
+
+    function startLoop() {
+      cursorNameEl.style.display = "inline-block";
+      cursorBioEl.style.display = "none";
+
+      typeText(typedNameEl, nameText, () => {
+        cursorNameEl.style.display = "none";
+        cursorBioEl.style.display = "inline-block";
+
+        typeText(typedBioEl, bioText, () => {
+          deleteText(typedBioEl, () => {
+            cursorBioEl.style.display = "none";
+            cursorNameEl.style.display = "inline-block";
+
+            deleteText(typedNameEl, () => {
+              startLoop();
+            });
+          });
+        });
+      });
     }
 
     /* ANIMAȚIE SNOWFLAKES */
