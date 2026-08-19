@@ -6,7 +6,6 @@
   <title>@ibr.alexandru | bio</title>
   <meta name="description" content="heyyy">
   
-  <!-- Fonturi Guns.lol & Icons -->
   <link href="https://assets.guns.lol/fonts/X6XYTKIVDUW7GZTZPZNN4EUM5KH54KHF.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -287,36 +286,28 @@
 </head>
 <body>
 
-  <!-- Overlay-ul inițial -->
   <div id="enter-overlay" onclick="enterSite()">
     <span>click to enter...</span>
   </div>
 
-  <!-- Buton Mute/Unmute -->
   <button class="volume-btn" onclick="toggleAudio()">
     <i class="fa-solid fa-volume-high" id="vol-icon"></i>
   </button>
 
-  <!-- Videoclip de fundal -->
-  <video class="bg-video" autoplay loop muted playsinline id="bg-video">
-    <source src="https://r2.guns.lol/aeab115e-8ce1-4666-946b-b93488768c19.mp4" type="video/mp4">
+  <video class="bg-video" loop playsinline id="bg-video">
+    <source src="tiktok_avrialyx_7675035762940841238.mp4" type="video/mp4">
   </video>
 
-  <!-- Canvas Ninsori -->
   <canvas id="snow-canvas"></canvas>
 
-  <!-- Card Profil -->
   <div class="profile-card">
     
-    <!-- BUTON CĂTRE ECSTASY WRLD -->
     <a href="https://ecstasywrld.com" target="_blank" class="main-site-btn">
       Main Site <i class="fa-solid fa-arrow-right"></i>
     </a>
 
-    <!-- Avatar -->
     <img src="https://r2.guns.lol/64fc1163-2128-424a-94d6-18e432e41f6f.webp" class="avatar-img" alt="Avatar">
 
-    <!-- Informații Card -->
     <div class="card-info">
       <div class="username-row">
         <span class="username">
@@ -331,7 +322,6 @@
         <span id="typed-bio"></span><span class="cursor-blink" id="cursor-bio" style="display: none;"></span>
       </div>
 
-      <!-- Iconițe Social Media -->
       <div class="socials-row">
         <a href="https://open.spotify.com/user/31jcaduiayq7onu4xb6orlw5uc44" target="_blank" class="social-link"><i class="fa-brands fa-spotify"></i></a>
         <a href="https://instagram.com/alexobiwanq/" target="_blank" class="social-link"><i class="fa-brands fa-instagram"></i></a>
@@ -341,11 +331,8 @@
     </div>
   </div>
 
-  <!-- Audio de fundal -->
-  <audio id="bg-audio" src="https://r2.guns.lol/35948b79-0a1a-4640-bb6f-e2a35442da00.mp3" loop></audio>
-
   <script>
-    const audio = document.getElementById('bg-audio');
+    const video = document.getElementById('bg-video');
     const volIcon = document.getElementById('vol-icon');
 
     function enterSite() {
@@ -353,16 +340,19 @@
       overlay.style.opacity = '0';
       setTimeout(() => overlay.style.display = 'none', 800);
 
-      audio.play();
+      // Pornește video-ul cu sunet la click
+      video.muted = false;
+      video.play();
       startLoop();
     }
 
     function toggleAudio() {
-      if (audio.paused) {
-        audio.play();
+      if (video.paused || video.muted) {
+        video.muted = false;
+        video.play();
         volIcon.className = "fa-solid fa-volume-high";
       } else {
-        audio.pause();
+        video.muted = true;
         volIcon.className = "fa-solid fa-volume-xmark";
       }
     }
